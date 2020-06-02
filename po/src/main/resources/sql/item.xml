@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="item">
+	<sql id="includeBoard">
+		WHERE USINGYN='Y'
+         <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			  <foreach item="item" index="index" collection="searchTypeArr">
+			        AND ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
+			  </foreach>
+		</if>	   
+		<if test="hiddenKeyword!=null and hiddenKeyword!=''">
+			AND VENDOR = #{hiddenKeyword}
+		</if>	        
+    </sql>
+
+    <select id="selectItemCount" resultType="Integer" parameterType="po.common.SearchVO">
+        SELECT 
+        	COUNT(*)
+          FROM ITEM
+         <include refid="includeBoard"/>
+    </select>  
+    
+    <select id="selectItemList" resultType="po.item.ItemVO" parameterType="po.common.SearchVO">
+        SELECT 
+        	ID, 
+        	VENDOR,
+        	(SELECT V.NAME FROM VENDOR V WHERE V.ID = I.VENDOR) VENDORNAME,
+        	NAME, 
+        	UNITPRICE,
+        	USINGYN, 
+        	CREATEDATETIME, 
+        	UPDATEDATETIME 
+        FROM ITEM I
+         <include refid="includeBoard"/>
+         ORDER BY NAME ASC 
+         LIMIT ${rowStart-1}, 10
+    </select> 
+    <select id="selectVendorSelectList" resultType="po.vendor.VendorVO">
+        SELECT 
+        	ID, 
+        	NAME
+        FROM VENDOR
+         <include refid="includeBoard"/>
+         ORDER BY NAME ASC
+    </select> 
+
+    <insert id="insertItem" parameterType="po.item.ItemVO" >
+    	INSERT INTO ITEM(ID, NAME, VENDOR, UNITPRICE, USINGYN, CREATEDATETIME, UPDATEDATETIME)
+		VALUES (#{id}, #{name}, #{vendor}, #{unitPrice}, #{usingYn}, NOW(), NOW())
+	</insert>
+	
+    <update id="updateItem" parameterType="po.item.ItemVO">
+        UPDATE ITEM
+           SET 
+           	   NAME = #{name}, 
+           	   UNITPRICE = #{unitPrice},
+           	   UPDATEDATETIME = NOW()
+         WHERE USINGYN='Y'
+           AND ID=#{id}
+    </update> 
+		 
+    <select id="selectItemOne" parameterType="String" resultType="po.item.ItemVO">
+        SELECT 
+        	   ID, 
+        	   VENDOR, 
+        	   (SELECT V.NAME FROM VENDOR V WHERE V.ID = I.VENDOR) VENDORNAME,
+        	   NAME, 
+        	   UNITPRICE, 
+        	   USINGYN, 
+        	   CREATEDATETIME, 
+        	   UPDATEDATETIME
+          FROM ITEM I
+         WHERE USINGYN='Y'
+           AND ID=#{id}
+    </select> 
+
+    <delete id="deleteItemOne" parameterType="String">
+        UPDATE ITEM
+           SET USINGYN='N' 
+         WHERE ID=#{id}
+    </delete> 
+
+</mapper>
+

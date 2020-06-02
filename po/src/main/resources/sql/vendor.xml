@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="vendor">
+	<sql id="includeBoard">
+		WHERE USINGYN='Y'
+         <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			  <foreach item="item" index="index" collection="searchTypeArr">
+			        AND ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
+			  </foreach>
+		</if>	           
+    </sql>
+
+    <select id="selectVendorCount" resultType="Integer" parameterType="po.common.SearchVO">
+        SELECT 
+        	COUNT(*)
+          FROM VENDOR
+         <include refid="includeBoard"/>
+    </select>  
+    
+    <select id="selectVendorList" resultType="po.vendor.VendorVO" parameterType="po.common.SearchVO">
+        SELECT 
+        	ID, 
+        	NAME, 
+        	ADDRESS, 
+        	TEL, 
+        	BNAME, 
+        	ACCOUNTNO, 
+        	BADDRESS, 
+        	BANK, 
+        	SWIFTCODE, 
+        	USINGYN, 
+        	CREATEDATETIME, 
+        	UPDATEDATETIME 
+        FROM VENDOR
+         <include refid="includeBoard"/>
+         ORDER BY NAME ASC 
+         LIMIT ${rowStart-1}, 10
+    </select> 
+
+    <insert id="insertVendor" parameterType="po.vendor.VendorVO" >
+    	INSERT INTO VENDOR(ID, NAME, ADDRESS, TEL, BNAME, ACCOUNTNO, BADDRESS, BANK, SWIFTCODE, USINGYN, CREATEDATETIME, UPDATEDATETIME)
+		VALUES (#{id}, #{name}, #{address}, #{tel}, #{bName}, #{accountNo}, #{bAddress}, #{bank}, #{swiftCode}, #{usingYn}, NOW(), NOW())
+	</insert>
+	
+    <update id="updateVendor" parameterType="po.vendor.VendorVO">
+        UPDATE VENDOR
+           SET 
+           	   NAME = #{name}, 
+           	   ADDRESS = #{address}, 
+           	   TEL = #{tel}, 
+           	   BNAME = #{bName}, 
+           	   ACCOUNTNO = #{accountNo}, 
+           	   BADDRESS = #{bAddress}, 
+           	   BANK = #{bank}, 
+           	   SWIFTCODE = #{swiftCode}, 
+           	   UPDATEDATETIME = NOW()
+         WHERE USINGYN='Y'
+           AND ID=#{id}
+    </update> 
+		 
+    <select id="selectVendorOne" parameterType="String" resultType="po.vendor.VendorVO">
+        SELECT ID, NAME, ADDRESS, TEL, BNAME, ACCOUNTNO, BADDRESS, BANK, SWIFTCODE, USINGYN, CREATEDATETIME, UPDATEDATETIME
+          FROM VENDOR
+         WHERE USINGYN='Y'
+           AND ID=#{id}
+    </select> 
+
+    <delete id="deleteVendorOne" parameterType="String">
+        UPDATE VENDOR
+           SET USINGYN='N' 
+         WHERE ID=#{id}
+    </delete> 
+
+</mapper>
+
