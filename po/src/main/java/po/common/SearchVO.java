@@ -9,8 +9,17 @@ public class SearchVO extends PageVO  {
     private String[] searchTypeArr;            // 검색 필드를 배열로 변환
     private String hiddenKeyword = "";
     private int hiddenIndex = 0;
+    private String selectedVendor;
     
-    public int getHiddenIndex() {
+    public String getSelectedVendor() {
+		return selectedVendor;
+	}
+
+	public void setSelectedVendor(String selectedVendor) {
+		this.selectedVendor = selectedVendor;
+	}
+
+	public int getHiddenIndex() {
 		return hiddenIndex;
 	}
 

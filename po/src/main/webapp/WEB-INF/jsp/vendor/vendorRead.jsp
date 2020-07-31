@@ -5,61 +5,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="assets/css/table.css">
+	<link rel="stylesheet" href="assets/css/button.css">
 <title>vendor</title>
 </head>
 <body>
-	<table border="1" style="width: 600px">
+	<table>
 		<caption>업체정보</caption>
 		<colgroup>
-			<col width='15%' />
+			<col width='20%' />
 			<col width='*%' />
 		</colgroup>
 		<tbody>
 			<tr>
-				<td>name</td>
+				<td>업체명</td>
 				<td><c:out value="${vendorInfo.name}" /></td>
 			</tr>
 			<tr>
-				<td>address</td>
+				<td>주소</td>
 				<td><c:out value="${vendorInfo.address}" /></td>
 			</tr>
 			<tr>
-				<td>tel</td>
+				<td>전화번호</td>
 				<td><c:out value="${vendorInfo.tel}" /></td>
 			</tr>
 			<tr>
-				<td>bName</td>
+				<td>수익자명</td>
 				<td><c:out value="${vendorInfo.bName}" /></td>
 			</tr>
 			<tr>
-				<td>accountNo</td>
+				<td>계좌번호</td>
 				<td><c:out value="${vendorInfo.accountNo}" /></td>
 			</tr>
 			<tr>
-				<td>bAddress</td>
+				<td>수익자주소</td>
 				<td><c:out value="${vendorInfo.bAddress}" /></td>
 			</tr>
 			<tr>
-				<td>bank</td>
+				<td>은행명</td>
 				<td><c:out value="${vendorInfo.bank}" /></td>
 			</tr>
 			<tr>
-				<td>swiftCode</td>
+				<td>은행코드</td>
 				<td><c:out value="${vendorInfo.swiftCode}" /></td>
 			</tr>
 			<tr>
-				<td>createDateTime</td>
+				<td>통화단위</td>
+				<td><c:out value="${vendorInfo.currencyCode}" /></td>
+			</tr>
+			<tr>
+				<td>생성일시</td>
 				<td><c:out value="${vendorInfo.createDateTime}" /></td>
 			</tr>
 			<tr>
-				<td>updateDateTime</td>
+				<td>수정일시</td>
 				<td><c:out value="${vendorInfo.updateDateTime}" /></td>
 			</tr>
+			<tr>
+					<td>첨부</td> 
+					<td>
+						<c:forEach var="listview" items="${listview}" varStatus="status">	
+            				<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
+							<c:out value="${listview.filename}"/></a> <c:out value="${listview.size2String()}"/><br/>
+						</c:forEach>					
+					</td> 
+				</tr>
 		</tbody>
 	</table>
-	<a href="#" onclick="history.back(-1)">돌아가기</a>
-	<a href="vendorDelete?id=<c:out value="${vendorInfo.id}"/>">삭제</a>
-	<a href="vendorForm?id=<c:out value="${vendorInfo.id}"/>">수정</a>
+
+	<button type="button"
+		onClick="location.href='vendorDelete?id=<c:out value="${vendorInfo.id}"/>'">삭제</button>
+	<button type="button"
+		onClick="location.href='vendorForm?id=<c:out value="${vendorInfo.id}"/>'">수정</button><br>
+	<button type="button" onClick="history.back(-1)">뒤로</button>
+	<button type="button" onClick="location.href='index.jsp'"/>메인으로</button>
 </body>
 </html>

@@ -8,7 +8,7 @@ public class ItemVO {
 	private String vendor;
 	private String vendorName;
 	private String name;
-	private float unitPrice;
+	private double unitPrice;
     private String usingYn = "Y";
     private String createDateTime;
     private String updateDateTime;
@@ -40,10 +40,10 @@ public class ItemVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getUnitPrice() {
+	public double getUnitPrice() {
 		return unitPrice;
 	}
-	public void setUnitPrice(float unitPrice) {
+	public void setUnitPrice(double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 	public String getUsingYn() {

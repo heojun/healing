@@ -4,7 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="assets/css/table.css">
+	<link rel="stylesheet" href="assets/css/button.css">
 <title>vendor</title>
 <script>
 function fn_formSubmit(){
@@ -21,58 +23,69 @@ function fn_formSubmit(){
 </script>
 </head>
 <body>
-	<form name="form1" action="vendorSave" method="post">
-		<table border="1" style="width:600px">
+	<form name="form1" action="vendorSave" method="post" enctype="multipart/form-data">
+		<table>
 			<caption>업체생성</caption>
 			<colgroup>
-				<col width='15%' />
+				<col width='20%' />
 				<col width='*%' />
 			</colgroup>
 			<tbody>
 				<tr>
 					<td>업체명</td> 
-					<td><input type="text" name="name" size="70" maxlength="250" value="<c:out value="${vendorInfo.name}"/>"></td> 
+					<td><input type="text" name="name" value="<c:out value="${vendorInfo.name}"/>"></td> 
 				</tr>
 				<tr>
 					<td>주소</td> 
-					<td><input type="text" name="address" size="70" maxlength="250" value="<c:out value="${vendorInfo.address}"/>"></td> 
+					<td><input type="text" name="address" value="<c:out value="${vendorInfo.address}"/>"></td> 
 				</tr>
 				<tr>
 					<td>전화번호</td> 
-					<td><input type="text" name="tel" size="70" maxlength="250" value="<c:out value="${vendorInfo.tel}"/>"></td> 
+					<td><input type="text" name="tel" value="<c:out value="${vendorInfo.tel}"/>"></td> 
 				</tr>
 				<tr>
 					<td>수익자명</td> 
-					<td><input type="text" name="bName" size="70" maxlength="250" value="<c:out value="${vendorInfo.bName}"/>"></td> 
+					<td><input type="text" name="bName" value="<c:out value="${vendorInfo.bName}"/>"></td> 
 				</tr>
 				<tr>
 					<td>계좌번호</td> 
-					<td><input type="text" name="accountNo" size="70" maxlength="250" value="<c:out value="${vendorInfo.accountNo}"/>"></td> 
+					<td><input type="text" name="accountNo" value="<c:out value="${vendorInfo.accountNo}"/>"></td> 
 				</tr>
 				<tr>
 					<td>수익자주소</td> 
-					<td><input type="text" name="bAddress" size="70" maxlength="250" value="<c:out value="${vendorInfo.bAddress}"/>"></td> 
+					<td><input type="text" name="bAddress" value="<c:out value="${vendorInfo.bAddress}"/>"></td> 
 				</tr>
 				<tr>
 					<td>은행명</td> 
-					<td><input type="text" name="bank" size="70" maxlength="250" value="<c:out value="${vendorInfo.bank}"/>"></td> 
+					<td><input type="text" name="bank" value="<c:out value="${vendorInfo.bank}"/>"></td> 
 				</tr>
 				<tr>
 					<td>은행코드</td> 
-					<td><input type="text" name="swiftCode" size="70" maxlength="250" value="<c:out value="${vendorInfo.swiftCode}"/>"></td> 
+					<td><input type="text" name="swiftCode" value="<c:out value="${vendorInfo.swiftCode}"/>"></td> 
 				</tr>
 				<tr>
-					<td>생성일시</td> 
-					<td><input type="text" name="createDateTime" size="70" maxlength="250" value="<c:out value="${vendorInfo.createDateTime}"/>"></td> 
+					<td>통화단위</td> 
+					<td><input type="text" name="currencyCode" value="<c:out value="${vendorInfo.currencyCode}"/>"></td> 
 				</tr>
 				<tr>
-					<td>수정일시</td> 
-					<td><input type="text" name="updateDateTime" size="70" maxlength="250" value="<c:out value="${vendorInfo.updateDateTime}"/>"></td> 
+					<td>첨부</td> 
+					<td>
+						<c:forEach var="listview" items="${listview}" varStatus="status">
+							<input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">	
+            				<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>"> 							 
+							<c:out value="${listview.filename}"/></a> <c:out value="${listview.size2String()}"/><br/>
+						</c:forEach>					
+					
+						<input type="file" name="uploadfile" multiple="" />
+					</td> 
 				</tr>
+			
 			</tbody>
 		</table>    
 		<input type="hidden" name="id" value="<c:out value="${vendorInfo.id}"/>"> 
-		<a href="#" onclick="fn_formSubmit()">저장</a>
+		<button type="button" onClick="fn_formSubmit()">저장</button><br>
+		<button type="button" onClick="history.back(-1)">뒤로</button>
+	<button type="button" onClick="location.href='index.jsp'"/>메인으로</button>
 	</form>	
 </body>
 </html>

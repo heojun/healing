@@ -34,7 +34,6 @@
         FROM ITEM I
          <include refid="includeBoard"/>
          ORDER BY NAME ASC 
-         LIMIT ${rowStart-1}, 10
     </select> 
     <select id="selectVendorSelectList" resultType="po.vendor.VendorVO">
         SELECT 

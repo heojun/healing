@@ -14,7 +14,7 @@ public class FileUtil {
      * 파일 업로드.
      */
     public List<FileVO> saveAllFiles(List<MultipartFile> upfiles) {
-        String filePath = "d:\\workspace\\fileupload\\"; 
+        String filePath = "/healingintljsp/tomcat/webapps/po/attache/"; 
         List<FileVO> filelist = new ArrayList<FileVO>();
 
         for (MultipartFile uploadfile : upfiles ) {
@@ -22,9 +22,9 @@ public class FileUtil {
                 continue;
             }
             
-            String newName = getNewName();
+            String newName = getNewName()+".png";
             
-            saveFile(uploadfile, filePath + "/" + newName.substring(0,4) + "/", newName);
+            saveFile(uploadfile, filePath + "/", newName);
             
             FileVO filedo = new FileVO();
             filedo.setFilename(uploadfile.getOriginalFilename());

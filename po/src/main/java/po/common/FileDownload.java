@@ -22,7 +22,7 @@ public class FileDownload {
      */
     @RequestMapping(value = "fileDownload")
     public void fileDownload(HttpServletRequest request,HttpServletResponse response) {
-        String path = "d:\\workspace\\fileupload\\"; 
+        String path = "/healingintljsp/tomcat/webapps/po/attache/" ;
         
         String filename = request.getParameter("filename");
         String downname = request.getParameter("downname");
@@ -38,7 +38,7 @@ public class FileDownload {
             System.out.println("UnsupportedEncodingException");
         }
         
-        realPath = path + downname.substring(0,4) + "/" + downname;
+        realPath = path + downname;
 
         File file1 = new File(realPath);
         if (!file1.exists()) {

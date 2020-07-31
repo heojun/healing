@@ -29,6 +29,7 @@
         	BADDRESS, 
         	BANK, 
         	SWIFTCODE, 
+        	CURRENCYCODE,
         	USINGYN, 
         	CREATEDATETIME, 
         	UPDATEDATETIME 
@@ -39,8 +40,8 @@
     </select> 
 
     <insert id="insertVendor" parameterType="po.vendor.VendorVO" >
-    	INSERT INTO VENDOR(ID, NAME, ADDRESS, TEL, BNAME, ACCOUNTNO, BADDRESS, BANK, SWIFTCODE, USINGYN, CREATEDATETIME, UPDATEDATETIME)
-		VALUES (#{id}, #{name}, #{address}, #{tel}, #{bName}, #{accountNo}, #{bAddress}, #{bank}, #{swiftCode}, #{usingYn}, NOW(), NOW())
+    	INSERT INTO VENDOR(ID, NAME, ADDRESS, TEL, BNAME, ACCOUNTNO, BADDRESS, BANK, SWIFTCODE, CURRENCYCODE, USINGYN, CREATEDATETIME, UPDATEDATETIME)
+		VALUES (#{id}, #{name}, #{address}, #{tel}, #{bName}, #{accountNo}, #{bAddress}, #{bank}, #{swiftCode}, #{currencyCode}, #{usingYn}, NOW(), NOW())
 	</insert>
 	
     <update id="updateVendor" parameterType="po.vendor.VendorVO">
@@ -54,13 +55,14 @@
            	   BADDRESS = #{bAddress}, 
            	   BANK = #{bank}, 
            	   SWIFTCODE = #{swiftCode}, 
+           	   CURRENCYCODE = #{currencyCode},
            	   UPDATEDATETIME = NOW()
          WHERE USINGYN='Y'
            AND ID=#{id}
     </update> 
 		 
     <select id="selectVendorOne" parameterType="String" resultType="po.vendor.VendorVO">
-        SELECT ID, NAME, ADDRESS, TEL, BNAME, ACCOUNTNO, BADDRESS, BANK, SWIFTCODE, USINGYN, CREATEDATETIME, UPDATEDATETIME
+        SELECT ID, NAME, ADDRESS, TEL, BNAME, ACCOUNTNO, BADDRESS, BANK, SWIFTCODE, CURRENCYCODE, USINGYN, CREATEDATETIME, UPDATEDATETIME
           FROM VENDOR
          WHERE USINGYN='Y'
            AND ID=#{id}
@@ -70,6 +72,27 @@
         UPDATE VENDOR
            SET USINGYN='N' 
          WHERE ID=#{id}
+    </delete> 
+    
+    <select id="selectVendorFileList" resultType="po.common.FileVO" parameterType="String">
+        SELECT FILENO, VENDOR, FILENAME, REALNAME, FILESIZE
+          FROM ATTACHFILE
+         WHERE VENDOR=#{vendor}
+         ORDER BY FILENO DESC 
+    </select> 
+
+    <insert id="insertVendorFile" parameterType="po.common.FileVO" >
+    	INSERT INTO ATTACHFILE (VENDOR, FILENAME, REALNAME, FILESIZE)
+		VALUES (#{vendor}, #{filename}, #{realname}, #{filesize})
+	</insert>
+    <delete id="deleteVendorFile" parameterType="hashmap"> 
+        DELETE 
+          FROM ATTACHFILE
+         WHERE FILENO IN (
+			  <foreach item="item" index="index" collection="fileno" separator=",">
+		        	 ${item}
+			  </foreach>  
+		)	         
     </delete> 
 
 </mapper>

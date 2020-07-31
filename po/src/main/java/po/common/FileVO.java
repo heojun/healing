@@ -1,8 +1,8 @@
 package po.common;
 
 public class FileVO {
-    private Integer fileno; 
-    private String parentPK;
+    private int fileno; 
+    private String vendor;
     private String filename;
     private String realname;
     private long filesize;
@@ -20,23 +20,33 @@ public class FileVO {
         return String.format("(%.0f %s)", filesize / Math.pow(unit, exp), "KMGTPE".charAt(exp - 1));
     }
     
-    public Integer getFileno() {
-        return fileno;
-    }
-
-    public void setFileno(Integer fileno) {
-        this.fileno = fileno;
-    }
-
-    public String getParentPK() {
-        return parentPK;
-    }
+   
     
-    public void setParentPK(String parentPK) {
-        this.parentPK = parentPK;
-    } 
-    
-    public String getFilename() {
+    public int getFileno() {
+		return fileno;
+	}
+
+
+
+	public void setFileno(int fileno) {
+		this.fileno = fileno;
+	}
+
+
+
+	public String getVendor() {
+		return vendor;
+	}
+
+
+
+	public void setVendor(String vendor) {
+		this.vendor = vendor;
+	}
+
+
+
+	public String getFilename() {
         return filename;
     }
     

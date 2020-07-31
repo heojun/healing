@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import po.common.FileUtil;
+import po.common.FileVO;
 import po.common.SearchVO;
 
 @Controller
@@ -38,17 +40,22 @@ public class VendorController {
 		String id = request.getParameter("id");
 		if (id!=null) {
 			VendorVO vendorInfo = vendorService.selectVendorOne(id);
+			List<?> listview = vendorService.selectVendorFileList(id);
 
 			modelMap.addAttribute("vendorInfo", vendorInfo);
+			modelMap.addAttribute("listview", listview);
 		}
 
 		return "vendor/vendorForm";
 	}
 
 	@RequestMapping(value = "/vendorSave")
-	public String vendorSave(VendorVO vendorInfo) throws Exception {
-
-		vendorService.insertVendor(vendorInfo);
+	public String vendorSave(HttpServletRequest request, VendorVO vendorInfo) throws Exception {
+		String[] fileno = request.getParameterValues("fileno");
+    	
+    	FileUtil fs = new FileUtil();
+		List<FileVO> filelist = fs.saveAllFiles(vendorInfo.getUploadfile());
+		vendorService.insertVendor(vendorInfo, filelist, fileno);
 
 		return "redirect:/vendorList";
 	}
@@ -60,8 +67,10 @@ public class VendorController {
 		String id = request.getParameter("id");
 
 		VendorVO vendorInfo = vendorService.selectVendorOne(id);
+		List<?> listview = vendorService.selectVendorFileList(id);
 
 		modelMap.addAttribute("vendorInfo", vendorInfo);
+		modelMap.addAttribute("listview", listview);
 
 		return "vendor/vendorRead";
 	}

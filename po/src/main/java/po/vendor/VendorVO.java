@@ -1,5 +1,9 @@
 package po.vendor;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import po.common.utiletc;
 
 public class VendorVO {
@@ -14,13 +18,38 @@ public class VendorVO {
     private String bank;
     private String swiftCode;
     private String usingYn = "Y";
-    private String createDateTime;
+    private String currencyCode;
+	private String createDateTime;
     private String updateDateTime;
+    private String filecnt;
+    /* 첨부파일 */
+	private List<MultipartFile> uploadfile;
+	
+	
+    public String getFilecnt() {
+		return filecnt;
+	}
+	public void setFilecnt(String filecnt) {
+		this.filecnt = filecnt;
+	}
     
-    
-    public String getShortTitle(Integer len){
+    public List<MultipartFile> getUploadfile() {
+		return uploadfile;
+	}
+	public void setUploadfile(List<MultipartFile> uploadfile) {
+		this.uploadfile = uploadfile;
+	}
+	public String getShortTitle(Integer len){
     	return utiletc.getShortString(name, len);
     }
+    public String getCurrencyCode() {
+		return currencyCode;
+	}
+
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+	}
 
     
     public String getUsingYn() {

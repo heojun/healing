@@ -1,6 +1,9 @@
 package po.item;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,16 +30,23 @@ public class ItemController {
 	// 리스트
 	@RequestMapping(value = "/itemList")
 	public String itemList(SearchVO searchVO, ModelMap modelMap) throws Exception {
-
-
 		List<?> vendorList = itemService.selectVendorSelectList();
-		if(searchVO.getHiddenKeyword() == null || searchVO.getHiddenKeyword().equals("")) {
+		
+		if((searchVO.getSelectedVendor() == null || searchVO.getSelectedVendor().equals("")) 
+				&& (searchVO.getHiddenKeyword() == null || searchVO.getHiddenKeyword().equals(""))) {
 			searchVO.setHiddenKeyword(((VendorVO)vendorList.get(0)).getId());
+		}else if(searchVO.getSelectedVendor() == null || searchVO.getSelectedVendor().equals("")){
+			searchVO.setSelectedVendor(searchVO.getHiddenKeyword());
+		}else if(searchVO.getHiddenKeyword() == null || searchVO.getHiddenKeyword().equals("")){
+			searchVO.setHiddenKeyword(searchVO.getSelectedVendor());
+		}else {
+			
 		}
 
 		searchVO.pageCalculate( itemService.selectItemCount(searchVO) ); 
 		List<?> listview   = itemService.selectItemList(searchVO);
 
+		modelMap.addAttribute("vendor", searchVO.getHiddenKeyword());
 		modelMap.addAttribute("vendorList", vendorList);
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
@@ -64,10 +74,15 @@ public class ItemController {
 	}
 
 	@RequestMapping(value = "/itemSave")
-	public String itemSave(ItemVO itemInfo) throws Exception {
-
+	public String itemSave(ItemVO itemInfo, ModelMap modelMap) throws Exception {
+		List<?> vendorList = itemService.selectVendorSelectList();
+	
+		if(itemInfo.getVendor() == null || itemInfo.getVendor().equals("")) {
+			itemInfo.setVendor(((VendorVO)vendorList.get(0)).getId());
+		}
 		itemService.insertItem(itemInfo);
-
+		String selectedVendor = itemInfo.getVendor();
+		modelMap.addAttribute("selectedVendor", selectedVendor);
 		return "redirect:/itemList";
 	}
 
@@ -100,13 +115,6 @@ public class ItemController {
 		}
 		// 목록 페이지로 이동 
 		return "redirect:/itemList"; 
-	}
-
-	@RequestMapping("/printInvoice") 
-	public ModelAndView printInvoice(){ 
-		String message = "프리마커를 해보자~"; 
-		return new ModelAndView("/WEB-INF/freemarker/invoice.ftl", "message", message);
-
 	}
 
 }

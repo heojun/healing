@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="assets/css/table.css">
 <title>품목생성</title>
 <script>
 	function fn_formSubmit() {
@@ -23,7 +24,7 @@
 </head>
 <body>
 	<form name="form1" action="itemSave" method="post">
-		<table border="1" style="width: 600px">
+		<table style="border-collapse:collapse;" border="1" >
 			<caption>품목생성</caption>
 			<colgroup>
 				<col width='15%' />
@@ -46,23 +47,14 @@
 					<td><input type="text" name="unitPrice" size="70"
 						maxlength="250" value="<c:out value="${itemInfo.unitPrice}"/>"></td>
 				</tr>
-				<tr>
-					<td>생성일시</td>
-					<td><input type="text" name="createDateTime" size="70"
-						maxlength="250"
-						value="<c:out value="${itemInfo.createDateTime}"/>"></td>
-				</tr>
-				<tr>
-					<td>수정일시</td>
-					<td><input type="text" name="updateDateTime" size="70"
-						maxlength="250"
-						value="<c:out value="${itemInfo.updateDateTime}"/>"></td>
-				</tr>
+				
 			</tbody>
 		</table>
 		<input type="hidden" name="id" value="<c:out value="${itemInfo.id}"/>">
 		<input type="hidden" name="vendor" value="${itemInfo.vendor}"/>
-		<a href="#" onclick="fn_formSubmit()">저장</a>
+		<button type="button" class="navyBtn" onClick="fn_formSubmit()">저장</button>
 	</form>
+	<button type="button" onClick="history.back(-1)">뒤로</button>
+	<button type="button" onClick="location.href='index.jsp'"/>메인으로</button>
 </body>
 </html>
